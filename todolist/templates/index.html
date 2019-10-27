@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>TodoApp - A Todo With Django</title>
+  {% load static %}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  </script>
+  <script type="text/javascript">
+        format = function date2str(x, y) {
+            var z = {
+                M: x.getMonth() + 1,
+                d: x.getDate(),
+                h: x.getHours(),
+                m: x.getMinutes(),
+                s: x.getSeconds()
+            };
+            y = y.replace(/(M+|d+|h+|m+|s+)/g, function(v) {
+                return ((v.length > 1 ? "0" : "") + eval('z.' + v.slice(-1))).slice(-2)
+            });
+
+            return y.replace(/(y+)/g, function(v) {
+                return x.getFullYear().toString().slice(-v.length)
+            });
+        }
+
+        function editForm(id, title, category, day, month, year) {
+
+            var d = document.getElementById('modal-description');
+            var i = document.getElementById('modal-id');
+            var c = document.getElementById('modal-category');
+            var date = document.getElementById('modal-dueDate');
+
+            var mydate = new Date(Number(year), Number(month)-1, Number(day), 0, 0, 0, 0);
+
+            d.value = title;
+            i.value = id;
+            c.value = category;
+            date.value = format(mydate, 'yyyy-MM-dd');
+        }
+  </script>
+</head>
+
+<body>
+    <div django-app="TaskManager">        
+        <div class="container_logo">
+            <p class="font-user">Olá {{user.username}}</p>
+    
+            <a class="link-logout" href="{% url 'logout' %}">Sair</a>
+    
+                <div class="content">
+                    <h1>TodoApp</h1>
+                    <p class="tagline">a Django todo app</p>
+                </div>
+        </div>
+            
+        <div class="container_logo">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="inputContainer">
+                    <input type="text" id="description" class="taskName" placeholder="What do you need to do?" name="description" required>
+                    <label for="description">Description</label>
+                </div>
+                <div class="inputContainer half last">
+                    <i class="fa fa-caret-down selectArrow"></i>
+                    <select id="category" class="taskCategory" name="category_select">
+                    <option class="disabled" value="">Choose a category</option>
+                    {% for category in categories %}
+                        <option class="" value="{{ category.name }}" name="{{ category.name }}">{{ category.name }}</option>
+                    {% endfor %}
+                    </select>
+                    <label for="category">Category</label>
+                </div>
+                <div class="inputContainer half last right">
+                    <input type="date" id="dueDate" class="taskDate" name="date">
+                    <label for="dueDate">Due Date</label>
+                </div>
+                <div class="row">
+                        <button class="taskAdd" name="taskAdd" type="submit"><i class="fa fa-plus icon"></i>Add ToDo</button>
+                        <button class="taskDelete" name="taskDelete" formnovalidate="" type="submit" onclick="$('input#sublist').click();"><i class="fa fa-trash-o icon"></i>Delete ToD o</button>
+                </div>
+                <ul class="taskList">
+                    {% for todo in todos %} <!-- django template lang - for loop -->
+                        <li class="taskItem">
+                            <input type="checkbox" class="taskCheckbox" name="checkedbox" id="{{ todo.id }}" value="{{ todo.id }}">
+                            <label for="{{ todo.id }}"><span class="complete-">{{ todo.title }}</span></label>
+                            <span class="category-{{ todo.category }}">{{ todo.category }}</span>
+                            <strong class="taskDate"><i class="fa fa-calendar"></i>{{ todo.created }} - {{ todo.due_date }}</strong>
+                            <a href="#myModal" role="button" class="btn btn-primary taskEdit" data-toggle="modal" onclick="editForm('{{todo.id}}', '{{todo.title}}', '{{todo.category}}',
+                                '{{todo.due_date.day}}' ,'{{todo.due_date.month}}','{{todo.due_date.year}}')">Editar</a>
+                        </li>
+                    {% endfor %}
+                    </ul><!-- taskList -->
+            </form>
+        </div>
+    </div>
+
+
+    <div class="bs-example">
+            <div id="myModal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit ToDo</h5>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" method="post">
+                            {% csrf_token %}
+                                <div class="row">
+                                        <input type="hidden" id="modal-id" name="id" value="">
+                                    <div class="inputContainer">
+                                        <input type="text" id="modal-description" class="taskName" placeholder="What do you need to do?" value="" name="description" required>
+                                        <label for="description">Description</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="inputContainer">
+                                            <i class="fa fa-caret-down selectArrow"></i>
+                                            <select id="modal-category" class="taskCategory" name="category_select">
+                                            <option class="disabled" value="">Choose a category</option>
+                                            {% for category in categories %}
+                                                <option class="" value="{{ category.name }}" name="{{ category.name }}">{{ category.name }}</option>
+                                            {% endfor %}
+                                            </select>
+                                            <label for="category">Category</label>                            
+                                    </div>
+                                <div class="row">
+                                    <div class="inputContainer">
+                                            <input type="date" id="modal-dueDate" name="date" value="">
+                                            <label for="dueDate">Due Date</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button class="btn btn-primary" name="taskEdit" type="submit">Salvar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+</html>
