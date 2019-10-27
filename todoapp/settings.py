@@ -31,7 +31,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['todoapp-karol.herokuapp.com']
+ALLOWED_HOSTS = ['todoapp-karol.herokuapp.com', 'localhost']
 
 
 # Application definition
@@ -141,5 +141,12 @@ LOGIN_REDIRECT_URL = 'TodoList'
 LOGOUT_REDIRECT_URL = '/'
 
 # EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+
+# EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+EMAIL_HOST=config('EMAIL_HOST')
+EMAIL_HOST_USER=config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
+EMAIL_PORT=config('EMAIL_PORT')
+EMAIL_USE_TLS=config('EMAIL_USE_TLS', default=True, cast=bool)
 
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
