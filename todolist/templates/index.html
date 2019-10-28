@@ -49,6 +49,7 @@
 
 <body>
     <div django-app="TaskManager">        
+        <!-- {{user_todo}} -->
         <div class="container_logo">
             <p class="font-user">Olá {{user.username}}</p>
     
@@ -65,7 +66,7 @@
                 {% csrf_token %}
                 <div class="inputContainer">
                     <input type="text" id="description" class="taskName" placeholder="What do you need to do?" name="description" required>
-                    <label for="description">Description</label>
+                    <label for="description">Title</label>
                 </div>
                 <div class="inputContainer half last">
                     <i class="fa fa-caret-down selectArrow"></i>
@@ -79,11 +80,11 @@
                 </div>
                 <div class="inputContainer half last right">
                     <input type="date" id="dueDate" class="taskDate" name="date">
-                    <label for="dueDate">Due Date</label>
+                    <label for="dueDate">Deadline</label>
                 </div>
                 <div class="row">
                         <button class="taskAdd" name="taskAdd" type="submit"><i class="fa fa-plus icon"></i>Add ToDo</button>
-                        <button class="taskDelete" name="taskDelete" formnovalidate="" type="submit" onclick="$('input#sublist').click();"><i class="fa fa-trash-o icon"></i>Delete ToD o</button>
+                        <button class="taskDelete" name="taskDelete" formnovalidate="" type="submit" onclick="$('input#sublist').click();"><i class="fa fa-trash-o icon"></i>Delete ToDo</button>
                 </div>
                 <ul class="taskList">
                     {% for todo in todos %} <!-- django template lang - for loop -->
@@ -93,7 +94,7 @@
                             <span class="category-{{ todo.category }}">{{ todo.category }}</span>
                             <strong class="taskDate"><i class="fa fa-calendar"></i>{{ todo.created }} - {{ todo.due_date }}</strong>
                             <a href="#myModal" role="button" class="btn btn-primary taskEdit" data-toggle="modal" onclick="editForm('{{todo.id}}', '{{todo.title}}', '{{todo.category}}',
-                                '{{todo.due_date.day}}' ,'{{todo.due_date.month}}','{{todo.due_date.year}}')">Editar</a>
+                                '{{todo.due_date.day}}' ,'{{todo.due_date.month}}','{{todo.due_date.year}}')">Edit</a>
                         </li>
                     {% endfor %}
                     </ul><!-- taskList -->
@@ -101,6 +102,7 @@
         </div>
     </div>
 
+<!-- Modal  -->
 
     <div class="bs-example">
             <div id="myModal" class="modal fade" tabindex="-1">
@@ -117,7 +119,7 @@
                                         <input type="hidden" id="modal-id" name="id" value="">
                                     <div class="inputContainer">
                                         <input type="text" id="modal-description" class="taskName" placeholder="What do you need to do?" value="" name="description" required>
-                                        <label for="description">Description</label>
+                                        <label for="description">Title</label>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -134,7 +136,7 @@
                                 <div class="row">
                                     <div class="inputContainer">
                                             <input type="date" id="modal-dueDate" name="date" value="">
-                                            <label for="dueDate">Due Date</label>
+                                            <label for="dueDate">Deadline</label>
                                     </div>
                                 </div>
                             </div>

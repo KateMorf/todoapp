@@ -6,9 +6,11 @@ from django.contrib.auth.models import User
 
 @login_required
 def index(request):
-    todos = TodoList.objects.all()
+
+    current_user = request.user
+    todos = TodoList.objects.filter(creator__id=current_user.id)
     categories = Category.objects.all()
-    users = User.objects.all()
+    # users = User.objects.all()
 
     if request.method == 'POST':
 
@@ -17,7 +19,8 @@ def index(request):
             date = str(request.POST['date'])
             category = request.POST['category_select']
             content = title + "--" + date + " " + category
-            Todo = TodoList(title=title, content=content, due_date=date, category=Category.objects.get(name=category))
+            Todo = TodoList(title=title, content=content, due_date=date, category=Category.objects.get(name=category),\
+                 creator=User.objects.get(id=int(current_user.id)))
             Todo.save()
             return redirect('TodoList')
 
@@ -26,7 +29,7 @@ def index(request):
             title = request.POST['description']
             date = str(request.POST['date'])
             category = request.POST['category_select']
-            content = title + "--" + date + " " + category 
+            content = title + "--" + date + " " + category
             
             todo = TodoList.objects.get(id=int(todo_id))
             todo.title = title
@@ -39,13 +42,8 @@ def index(request):
         
         if 'taskDelete' in request.POST:
             TodoList.objects.filter(id__in=request.POST.getlist('checkedbox')).delete()
-            # checkedlist = request.POST['checkedbox']
-            
-            # for todo_id in checkedlist:
-            #     todo = TodoList.objects.get(id=int(todo_id))
-            #     todo.delete()
     
-    return render(request, 'index.html', {'todos': todos, 'categories': categories, 'users': users})
+    return render(request, 'index.html', {'todos': todos, 'categories': categories})
 
 @login_required
 def logout_view(request):

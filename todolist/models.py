@@ -17,6 +17,7 @@ class TodoList(models.Model):
     content = models.TextField(blank=True)
     created = models.DateField(default=timezone.now().strftime("%Y-%m-%d"))
     due_date = models.DateField(default=timezone.now().strftime("%Y-%m-%d"))
+    creator = models.ForeignKey(User, on_delete=models.PROTECT)
     category = models.ForeignKey(Category, default="general", on_delete=models.PROTECT)
     
     class Meta:
