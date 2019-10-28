@@ -3,8 +3,8 @@
 
 Implementar uma TODO List utilizando Python, Django e outras bibliotecas/tecnologias que achar necessário.
 
-(X) Possibilidade de criar uma nova conta, realizar login e recuperação de senha;
-(X) CRUD de TODO Lists: criar, remover, editar o título;
+- (X) Possibilidade de criar uma nova conta, realizar login e recuperação de senha;
+- (X) CRUD de TODO Lists: criar, remover, editar o título;
 - CRUD de tarefas: para cada TODO List, possibilidade de criar tarefas, editar, remover, marcar com concluída e adicionar uma deadline;
 - Possibilidade de atribuir uma tarefa para um usuário;
 - Relatório diário via e-mail de tarefas concluídas naquele dia e próximas prioridades, baseado no deadline;
@@ -12,9 +12,9 @@ Implementar uma TODO List utilizando Python, Django e outras bibliotecas/tecnolo
 - Possibilidade de fazer login no usuário `admin@biome-hub.com`, onde seu password será `xxyyzz` onde `xx` será o dobro do dia atual, `yy` será o dobro do mês e `zz` a hora atual (sempre 6 caracteres);
 
 ## Must Have (OK)
-(X) Python 3.6+;
-(X) Django 2.0+;
-(X) Git para versionamento do projeto;
+- (X) Python 3.6+;
+- (X) Django 2.0+;
+- (X) Git para versionamento do projeto;
 
 ## O que será avaliado?
 - Arquitetura e modularidade so sistema;
